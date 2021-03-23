@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import shoppinglist.entity.DaftarBelanja;
 import shoppinglist.entity.DaftarBelanjaDetil;
+import shoppinglist.entity.DaftarBelanjaDetilId;
 import shoppinglist.repository.DaftarBelanjaDetilRepo;
 import shoppinglist.repository.DaftarBelanjaRepo;
 
@@ -194,14 +195,10 @@ public class controller
 
                 if (yakin.equals("y") || yakin.equals("Y")) {
 
-//                    List<DaftarBelanjaDetil> ListDetailDihapus = listBelanja.getDaftarBarang();
-//                    for (DaftarBelanjaDetil dataHapus : ListDetailDihapus) {
-////                        //TODO
-//                        repoDetil.deleteById(id, dataHapus.getNoUrut());
-//                    }
+                    // Menghapus Detil Belanja
+                    repoDetil.deleteByDaftarbelanja_id(listBelanja.getId());
 
-//                    System.out.println("\nListDetailDihapus = " + ListDetailDihapus.toString() + "\n");
-
+                    // Menghapus Daftar Belanja
                     repo.deleteById(id);
                     System.out.println("Data berhasil dihapus");
                 }
