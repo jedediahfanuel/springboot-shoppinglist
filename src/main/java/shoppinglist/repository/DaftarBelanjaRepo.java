@@ -2,7 +2,6 @@ package shoppinglist.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import shoppinglist.entity.DaftarBelanja;
-import shoppinglist.entity.DaftarBelanjaDetil;
 
 import java.util.List;
 

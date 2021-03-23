@@ -1,7 +1,7 @@
-/**
- * DaftarBelanja.java
- *
- * Created on Jan 25, 2021, 2:04:41 PM
+/*
+  DaftarBelanja.java
+
+  Created on Jan 25, 2021, 2:04:41 PM
  */
 package shoppinglist.entity;
 

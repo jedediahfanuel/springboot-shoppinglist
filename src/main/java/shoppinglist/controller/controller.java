@@ -1,10 +1,8 @@
 package shoppinglist.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import shoppinglist.entity.DaftarBelanja;
 import shoppinglist.entity.DaftarBelanjaDetil;
-import shoppinglist.entity.DaftarBelanjaDetilId;
 import shoppinglist.repository.DaftarBelanjaDetilRepo;
 import shoppinglist.repository.DaftarBelanjaRepo;
 
