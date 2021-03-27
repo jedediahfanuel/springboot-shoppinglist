@@ -1,3 +1,8 @@
+/*
+  controller.java
+
+  Created on Mar 21, 2021, 5:05:33 PM
+ */
 package shoppinglist;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +15,10 @@ import shoppinglist.repository.DaftarBelanjaRepo;
 
 import java.util.Scanner;
 
+/**
+ *
+ * @author jeded
+ */
 @SpringBootApplication
 public class DemoShoppingListSpringBootApplication implements CommandLineRunner
 {

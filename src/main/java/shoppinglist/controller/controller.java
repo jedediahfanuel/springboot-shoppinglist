@@ -1,3 +1,8 @@
+/*
+  controller.java
+
+  Created on Mar 22, 2021, 8:35:04 PM
+ */
 package shoppinglist.controller;
 
 import org.springframework.data.domain.Sort;
@@ -11,6 +16,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
+/**
+ *
+ * @author jeded
+ */
 public class controller
 {
 

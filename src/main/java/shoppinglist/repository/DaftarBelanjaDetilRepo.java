@@ -1,3 +1,8 @@
+/*
+  DaftarBelanjaDetilRepo.java
+
+  Created on Mar 23, 2021, 2:41:44 AM
+ */
 package shoppinglist.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -7,6 +12,10 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 import shoppinglist.entity.DaftarBelanjaDetil;
 
+/**
+ *
+ * @author jeded
+ */
 public interface DaftarBelanjaDetilRepo extends JpaRepository<DaftarBelanjaDetil, Long>
 {
     @Transactional
