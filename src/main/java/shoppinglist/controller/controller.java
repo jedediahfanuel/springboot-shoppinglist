@@ -13,6 +13,7 @@ import java.util.Scanner;
 
 public class controller
 {
+
     public static void lukisGarisHorizontal()
     {
         final String garisHorizontal = "\n================================================================================================================\n\n";
@@ -50,6 +51,14 @@ public class controller
         }
 
         lukisGarisHorizontal();
+    }
+
+    public static long bacaIdTerakhir(DaftarBelanjaRepo repo)
+    {
+        // Mendapatkan id terakhir dari DaftarBelanja
+        DaftarBelanja daftarBelanja = repo.findTopByOrderByIdDesc();
+
+        return daftarBelanja.getId() + 1;
     }
 
     public static void bacaRecordBerdasarkanID(DaftarBelanjaRepo repo, Scanner cin)
@@ -104,18 +113,69 @@ public class controller
 
     public static void tambahDaftarBelanja(DaftarBelanjaRepo repo, Scanner cin)
     {
+
         System.out.println("\nInput Data :\n");
         System.out.println("Judul   : (-1 untuk batal)");
         String cinJudul = cin.nextLine().trim();
 
         if (!cinJudul.equals("-1")) {
+            long idDaftarBelanja = bacaIdTerakhir(repo);
             LocalDateTime waktuTanggal = LocalDateTime.now().withNano(0);
 
             DaftarBelanja listBelanja = new DaftarBelanja();
+            listBelanja.setId(idDaftarBelanja);
             listBelanja.setJudul(cinJudul);
             listBelanja.setTanggal(waktuTanggal);
 
             // Menyimpan Data Daftar Belanja ke database
+            // belum ada detil barangnya
+            repo.save(listBelanja);
+
+            System.out.println("\nMasukkan Data Barang");
+
+            String isLanjut = "Y";
+            int countNoUrut = 0;
+            while (isLanjut.equals("Y") || isLanjut.equals("y")) {
+                DaftarBelanjaDetil detilBarang = new DaftarBelanjaDetil();
+                countNoUrut++;
+
+                System.out.println("\nMasukkan Data Barang : ");
+                System.out.println(countNoUrut + ". ");
+
+                System.out.println("Nama Barang : ");
+                String cinNamabarang = cin.nextLine().trim();
+
+                System.out.println("Jumlah      : [Angka]");
+                float cinJumlah = cin.nextFloat();
+
+                // Sentinel
+                cin.nextLine();
+
+                System.out.println("Satuan      : ");
+                String cinSatuan = cin.nextLine();
+
+                System.out.println("Memo        : ");
+                String cinMemo = cin.nextLine().trim();
+
+                System.out.println("Simpan ? (Y/N)");
+                String cinSimpan = cin.nextLine().trim();
+
+                if (cinSimpan.equals("Y") || cinSimpan.equals("y")) {
+                    detilBarang.setId(listBelanja.getId(), countNoUrut);
+                    detilBarang.setNamaBarang(cinNamabarang);
+                    detilBarang.setByk(cinJumlah);
+                    detilBarang.setSatuan(cinSatuan);
+                    detilBarang.setMemo(cinMemo);
+                    listBelanja.addDaftarBarang(detilBarang);
+                } else {
+                    countNoUrut--;
+                }
+
+                System.out.println("Tambah Lagi ? (Y/N)");
+                isLanjut = cin.nextLine().trim();
+            }
+
+            // Mengirim detil barang ke database
             repo.save(listBelanja);
 
             // Melakukan feedback ke user

@@ -8,4 +8,5 @@ import java.util.List;
 public interface DaftarBelanjaRepo extends JpaRepository<DaftarBelanja, Long>
 {
     List<DaftarBelanja> findByJudulIgnoreCaseContaining(String judul);
+    DaftarBelanja findTopByOrderByIdDesc();
 }

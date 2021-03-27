@@ -25,10 +25,10 @@ public class DaftarBelanjaDetil
     @EmbeddedId
     private DaftarBelanjaDetilId id;
     
-    @MapsId("daftarbelanja_id")
-    @ManyToOne
-    @JoinColumn(name = "daftarbelanja_id")
-    private DaftarBelanja induk;
+//    @MapsId("daftarbelanja_id")
+//    @ManyToOne
+//    @JoinColumn(name = "daftarbelanja_id")
+//    private DaftarBelanja induk;
     
     @Transient
     private int noUrut;
@@ -49,16 +49,23 @@ public class DaftarBelanjaDetil
     {
         id = new DaftarBelanjaDetilId();
     }
-    
-    public DaftarBelanja getInduk()
+
+    public void setId(long idObjekInduk, int noUrut)
     {
-        return induk;
+        id = new DaftarBelanjaDetilId();
+        id.setDaftarBelanjaId(idObjekInduk);
+        id.setNoUrut(noUrut);
     }
-    
-    public void setInduk(DaftarBelanja db)
-    {
-        induk = db;
-    }
+
+//    public DaftarBelanja getInduk()
+//    {
+//        return induk;
+//    }
+//
+//    public void setInduk(DaftarBelanja db)
+//    {
+//        induk = db;
+//    }
 
     public int getNoUrut()
     {

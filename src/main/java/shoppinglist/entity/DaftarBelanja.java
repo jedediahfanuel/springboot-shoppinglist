@@ -19,8 +19,8 @@ import javax.persistence.*;
 public class DaftarBelanja 
 {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "daftarbelanja_id_seq")
-    @SequenceGenerator(name = "daftarbelanja_id_seq", sequenceName = "daftarbelanja_id_seq", allocationSize = 1)
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "daftarbelanja_id_seq")
+//    @SequenceGenerator(name = "daftarbelanja_id_seq", sequenceName = "daftarbelanja_id_seq", allocationSize = 1)
     private long id;
     
     @Column(columnDefinition = "TIMESTAMP")
@@ -76,13 +76,13 @@ public class DaftarBelanja
     public void addDaftarBarang(DaftarBelanjaDetil _brg)
     {
         daftarBrg.add(_brg);
-        _brg.setInduk(this);
+//        _brg.setInduk(this);
     }
 
     public void setDaftarBarang(List<DaftarBelanjaDetil> _daftarBrg)
     {
         this.daftarBrg = _daftarBrg;
-        for (int i = 0; i < daftarBrg.size(); i++)
-            daftarBrg.get(i).setInduk(this);
+//        for (int i = 0; i < daftarBrg.size(); i++)
+//            daftarBrg.get(i).setInduk(this);
     }
 }
