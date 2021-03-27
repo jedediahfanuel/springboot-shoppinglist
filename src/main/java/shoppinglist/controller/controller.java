@@ -20,9 +20,22 @@ public class controller
         System.out.println(garisHorizontal);
     }
 
+    private static boolean checkUserResponse(String userInput) {
+
+        return userInput.equals("Y") || userInput.equals("y");
+
+    }
+
+    public static long bacaIdTerakhir(DaftarBelanjaRepo repo) {
+        // Mendapatkan id terakhir dari DaftarBelanja
+        DaftarBelanja daftarBelanja = repo.findTopByOrderByIdDesc();
+
+        return daftarBelanja.getId() + 1;
+    }
+
     public static void bacaSemuaRecord(DaftarBelanjaRepo repo)
     {
-        System.out.println("Mendapatkan Semua Record DaftarBelanja");
+        System.out.println("\nMendapatkan Semua Record DaftarBelanja");
 
         // Mendapatkan semua data (DaftarBelanja)
         List<DaftarBelanja> all = repo.findAll(Sort.by(Sort.Direction.ASC, "id"));
@@ -41,7 +54,7 @@ public class controller
 
     public static void bacaSemuaJudul(DaftarBelanjaRepo repo)
     {
-        System.out.println("");
+        System.out.println();
 
         // Mendapatkan semua data (DaftarBelanja)
         List<DaftarBelanja> all = repo.findAll(Sort.by(Sort.Direction.ASC, "id"));
@@ -51,14 +64,6 @@ public class controller
         }
 
         lukisGarisHorizontal();
-    }
-
-    public static long bacaIdTerakhir(DaftarBelanjaRepo repo)
-    {
-        // Mendapatkan id terakhir dari DaftarBelanja
-        DaftarBelanja daftarBelanja = repo.findTopByOrderByIdDesc();
-
-        return daftarBelanja.getId() + 1;
     }
 
     public static void bacaRecordBerdasarkanID(DaftarBelanjaRepo repo, Scanner cin)
@@ -135,7 +140,7 @@ public class controller
 
             String isLanjut = "Y";
             int countNoUrut = 0;
-            while (isLanjut.equals("Y") || isLanjut.equals("y")) {
+            while (checkUserResponse(isLanjut)) {
                 DaftarBelanjaDetil detilBarang = new DaftarBelanjaDetil();
                 countNoUrut++;
 
@@ -160,7 +165,7 @@ public class controller
                 System.out.println("Simpan ? (Y/N)");
                 String cinSimpan = cin.nextLine().trim();
 
-                if (cinSimpan.equals("Y") || cinSimpan.equals("y")) {
+                if (checkUserResponse(cinSimpan)) {
                     detilBarang.setId(listBelanja.getId(), countNoUrut);
                     detilBarang.setNamaBarang(cinNamabarang);
                     detilBarang.setByk(cinJumlah);
@@ -251,7 +256,7 @@ public class controller
                         "(Y/N)\n -->");
                 String yakin = cin.nextLine();
 
-                if (yakin.equals("y") || yakin.equals("Y")) {
+                if (checkUserResponse(yakin)) {
 
                     // Menghapus Detil Belanja
                     repoDetil.deleteByDaftarbelanja_id(listBelanja.getId());
