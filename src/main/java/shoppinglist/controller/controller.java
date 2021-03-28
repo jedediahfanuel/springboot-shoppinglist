@@ -25,7 +25,11 @@ public class controller
 
     public static void lukisGarisHorizontal()
     {
-        final String garisHorizontal = "\n================================================================================================================\n\n";
+        final String garisHorizontal = "\n======================" +
+                                       "========================" +
+                                       "========================" +
+                                       "========================" +
+                                       "====================\n\n";
         System.out.println(garisHorizontal);
     }
 
@@ -54,7 +58,7 @@ public class controller
 
             List<DaftarBelanjaDetil> listBarang = db.getDaftarBarang();
             for (DaftarBelanjaDetil barang : listBarang) {
-                System.out.println("\t  " + barang.getNamaBarang() + " " + barang.getByk() + " " + barang.getSatuan());
+                System.out.println("\t " + barang.getNamaBarang() + " " + barang.getByk() + " " + barang.getSatuan());
             }
         }
 
@@ -77,7 +81,7 @@ public class controller
 
     public static void bacaRecordBerdasarkanID(DaftarBelanjaRepo repo, Scanner cin)
     {
-        System.out.println("\nMasukkan ID dari objek DaftarBelanja yang ingin ditampilkan\n");
+        System.out.println("\nMasukkan ID dari objek DaftarBelanja yang ingin ditampilkan");
         System.out.println("--> (-1 untuk batal)");
 
         long id = Long.parseLong(cin.nextLine());
@@ -93,7 +97,12 @@ public class controller
 
                 List<DaftarBelanjaDetil> listBarang = db.getDaftarBarang();
                 for (DaftarBelanjaDetil barang : listBarang) {
-                    System.out.println("\t > " + barang.getNamaBarang() + " " + barang.getByk() + " " + barang.getSatuan());
+                    System.out.println(
+                            "\t  > " + barang.getNamaBarang() +
+                            " " + barang.getByk() +
+                            " " + barang.getSatuan()
+                    );
+                    System.out.println("\t\t  >> " + barang.getMemo());
                 }
             }
             else {
@@ -106,7 +115,7 @@ public class controller
 
     public static void bacaRecordBerdasarkanKemiripanString(DaftarBelanjaRepo repo, Scanner cin)
     {
-        System.out.println("\nMasukkan kemiripan Judul dari objek DaftarBelanja yang ingin ditampilkan\n");
+        System.out.println("\nMasukkan kemiripan Judul dari objek DaftarBelanja yang ingin ditampilkan");
         System.out.println("--> (-1 untuk batal)");
 
         String stringJudul = cin.nextLine().trim();
@@ -209,7 +218,7 @@ public class controller
         // Membaca semua list belanja yang ada
         bacaSemuaJudul(repo);
 
-        System.out.println("Masukkan ID dari objek DaftarBelanja yang ingin diperbaharui\n");
+        System.out.println("Masukkan ID dari objek DaftarBelanja yang ingin diperbaharui");
         System.out.println("--> (-1 untuk batal)");
         long idDaftarBelanja = Long.parseLong(cin.nextLine());
 
@@ -220,7 +229,11 @@ public class controller
             if (optDB.isPresent()) {
                 // Meminta data baru ke user untuk judul dan tanggal
                 DaftarBelanja listBelanja = optDB.get();
-                System.out.println("\tJudul : "  + listBelanja.getJudul() + "\n\tWaktu : " + listBelanja.getTanggal() + "\n");
+                System.out.println(
+                        "\tJudul : "  + listBelanja.getJudul() +
+                        "\n\tWaktu : " + listBelanja.getTanggal() +
+                        "\n"
+                );
 
                 LocalDateTime waktuTanggal = LocalDateTime.now().withNano(0);
                 System.out.println("Waktu Update -> " + waktuTanggal);
@@ -240,43 +253,47 @@ public class controller
                     // Menampilkan semua barang dari list terpilih
                     bacaListBarang(listBarang);
 
-                    System.out.println("Masukkan ID dari barang yang ingin diperbaharui\n");
+                    System.out.println("\nMasukkan ID dari barang yang ingin diperbaharui");
                     System.out.println("--> (-1 untuk batal)");
                     int noUrutBarang = Integer.parseInt(cin.nextLine());
 
-                    DaftarBelanjaDetil barang = listBelanja.getBarang(noUrutBarang);
-                    bacaBarang(barang);
+                    if (noUrutBarang != -1) {
+                        DaftarBelanjaDetil barang = listBelanja.getBarang(noUrutBarang);
+                        bacaBarang(barang);
 
-                    // Meminta data baru mengenai barang
-                    System.out.println("Data baru : ");
-                    System.out.println("-> Nama Barang : ");
-                    String cinNamabarang = cin.nextLine().trim();
+                        // Meminta data baru mengenai barang
+                        System.out.println("Data baru : ");
+                        System.out.println("-> Nama Barang : ");
+                        String cinNamabarang = cin.nextLine().trim();
 
-                    System.out.println("-> Jumlah      : [Angka]");
-                    float cinJumlah = cin.nextFloat();
+                        System.out.println("-> Jumlah      : [Angka]");
+                        float cinJumlah = cin.nextFloat();
 
-                    // Sentinel
-                    cin.nextLine();
+                        // Sentinel
+                        cin.nextLine();
 
-                    System.out.println("-> Satuan      : ");
-                    String cinSatuan = cin.nextLine();
+                        System.out.println("-> Satuan      : ");
+                        String cinSatuan = cin.nextLine();
 
-                    System.out.println("-> Memo        : ");
-                    String cinMemo = cin.nextLine().trim();
+                        System.out.println("-> Memo        : ");
+                        String cinMemo = cin.nextLine().trim();
 
-                    System.out.println("Simpan ? (Y/N)");
-                    String cinSimpan = cin.nextLine().trim();
+                        System.out.println("Simpan ? (Y/N)");
+                        String cinSimpan = cin.nextLine().trim();
 
-                    if (checkUserResponse(cinSimpan)) {
-                        barang.setNamaBarang(cinNamabarang);
-                        barang.setByk(cinJumlah);
-                        barang.setSatuan(cinSatuan);
-                        barang.setMemo(cinMemo);
-                        listBelanja.setBarang(barang, noUrutBarang);
+                        if (checkUserResponse(cinSimpan)) {
+                            barang.setNamaBarang(cinNamabarang);
+                            barang.setByk(cinJumlah);
+                            barang.setSatuan(cinSatuan);
+                            barang.setMemo(cinMemo);
+                            listBelanja.setBarang(barang, noUrutBarang);
+                        }
+
+                        System.out.println("Update Lagi ? (Y/N)");
+                        isLanjut = cin.nextLine().trim();
+                    } else {
+                        isLanjut = "N";
                     }
-
-                    System.out.println("Update Lagi ? (Y/N)");
-                    isLanjut = cin.nextLine().trim();
                 }
 
                 // Menyimpan Data Daftar Belanja ke database
@@ -287,6 +304,14 @@ public class controller
                 System.out.println("\tID    : " + listBelanja.getId());
                 System.out.println("\tJudul : " + listBelanja.getJudul());
                 System.out.println("\tWaktu : " + listBelanja.getTanggal());
+
+                for (DaftarBelanjaDetil barang : listBarang) {
+                    System.out.println(
+                            "\t  > " + barang.getNamaBarang() +
+                            " " + barang.getByk() +
+                            " " + barang.getSatuan()
+                    );
+                }
             }
             else {
                 System.out.println("List Belanja dengan id {" + idDaftarBelanja + "} tidak ditemukan.");
@@ -326,7 +351,7 @@ public class controller
         // Membaca semua list belanja yang ada
         bacaSemuaJudul(repo);
 
-        System.out.println("Masukkan ID dari objek DaftarBelanja yang ingin dihapus\n");
+        System.out.println("Masukkan ID dari objek DaftarBelanja yang ingin dihapus");
         System.out.println("--> (-1 untuk batal)");
         long id = Long.parseLong(cin.nextLine());
 
@@ -336,7 +361,11 @@ public class controller
             Optional<DaftarBelanja> optDB = repo.findById(id);
             if (optDB.isPresent()) {
                 DaftarBelanja listBelanja = optDB.get();
-                System.out.println("\tJudul : "  + listBelanja.getJudul() + "\n\tWaktu : " + listBelanja.getTanggal() + "\n");
+                System.out.println(
+                        "\tJudul : "  + listBelanja.getJudul() +
+                        "\n\tWaktu : " + listBelanja.getTanggal() +
+                        "\n"
+                );
 
                 System.out.println("" +
                         "Apakah anda yakin ingin menghapus data ini ? " +
