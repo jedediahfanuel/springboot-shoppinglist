@@ -8,9 +8,6 @@ package shoppinglist.entity;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.MapsId;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -48,6 +45,11 @@ public class DaftarBelanjaDetil
     public DaftarBelanjaDetil()
     {
         id = new DaftarBelanjaDetilId();
+    }
+
+    public DaftarBelanjaDetilId getId()
+    {
+        return id;
     }
 
     public void setId(long idObjekInduk, int noUrut)

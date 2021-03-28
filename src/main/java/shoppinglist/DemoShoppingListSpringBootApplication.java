@@ -43,7 +43,7 @@ public class DemoShoppingListSpringBootApplication implements CommandLineRunner
         boolean lanjut = true;
         while (lanjut) {
             System.out.println("" +
-                    "Pilih menu (nomor): " +
+                    "Pilih menu (nomor): \n" +
                     "1. Tampilkan Semua List Belanja (Detail)\n" +
                     "2. Tampilkan Judul List Belanja berdasarkan ID\n" +
                     "3. Tampilkan Judul List Belanja berdasarkan Judul\n" +

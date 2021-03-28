@@ -72,6 +72,29 @@ public class DaftarBelanja
     {
         return daftarBrg;
     }
+
+    public DaftarBelanjaDetil getBarang(int noUrut)
+    {
+        for (DaftarBelanjaDetil barang : daftarBrg) {
+            if (barang.getId().getNoUrut() == noUrut) {
+                return barang;
+            }
+        }
+
+        return null;
+    }
+
+    public void setBarang(DaftarBelanjaDetil barang, int noUrut)
+    {
+        for (DaftarBelanjaDetil brg : daftarBrg) {
+            if (brg.getId().getNoUrut() == noUrut) {
+                brg.setNamaBarang(barang.getNamaBarang());
+                brg.setByk(barang.getByk());
+                brg.setSatuan(barang.getSatuan());
+                brg.setMemo(barang.getMemo());
+            }
+        }
+    }
     
     public void addDaftarBarang(DaftarBelanjaDetil _brg)
     {
@@ -82,7 +105,9 @@ public class DaftarBelanja
     public void setDaftarBarang(List<DaftarBelanjaDetil> _daftarBrg)
     {
         this.daftarBrg = _daftarBrg;
-//        for (int i = 0; i < daftarBrg.size(); i++)
-//            daftarBrg.get(i).setInduk(this);
+/*
+        for (int i = 0; i < daftarBrg.size(); i++)
+            daftarBrg.get(i).setInduk(this);
+*/
     }
 }

@@ -29,13 +29,13 @@ public class controller
         System.out.println(garisHorizontal);
     }
 
-    private static boolean checkUserResponse(String userInput) {
-
+    private static boolean checkUserResponse(String userInput)
+    {
         return userInput.equals("Y") || userInput.equals("y");
-
     }
 
-    public static long bacaIdTerakhir(DaftarBelanjaRepo repo) {
+    public static long bacaIdTerakhir(DaftarBelanjaRepo repo)
+    {
         // Mendapatkan id terakhir dari DaftarBelanja
         DaftarBelanja daftarBelanja = repo.findTopByOrderByIdDesc();
 
@@ -90,6 +90,11 @@ public class controller
             if (optDB.isPresent()) {
                 DaftarBelanja db = optDB.get();
                 System.out.println("\tJudul : "  + db.getJudul() + "\n\tWaktu : " + db.getTanggal());
+
+                List<DaftarBelanjaDetil> listBarang = db.getDaftarBarang();
+                for (DaftarBelanjaDetil barang : listBarang) {
+                    System.out.println("\t > " + barang.getNamaBarang() + " " + barang.getByk() + " " + barang.getSatuan());
+                }
             }
             else {
                 System.out.println("List Belanja dengan id {" + id + "} tidak ditemukan.");
@@ -127,7 +132,7 @@ public class controller
 
     public static void tambahDaftarBelanja(DaftarBelanjaRepo repo, Scanner cin)
     {
-
+        // Melakukan input judul dan tanggal Daftar Belanja
         System.out.println("\nInput Data :\n");
         System.out.println("Judul   : (-1 untuk batal)");
         String cinJudul = cin.nextLine().trim();
@@ -141,10 +146,7 @@ public class controller
             listBelanja.setJudul(cinJudul);
             listBelanja.setTanggal(waktuTanggal);
 
-            // Menyimpan Data Daftar Belanja ke database
-            // belum ada detil barangnya
-            repo.save(listBelanja);
-
+            // Melakukan input barang
             System.out.println("\nMasukkan Data Barang");
 
             String isLanjut = "Y";
@@ -204,28 +206,78 @@ public class controller
 
     public static void perbaharuiDaftarBelanja(DaftarBelanjaRepo repo, Scanner cin)
     {
+        // Membaca semua list belanja yang ada
         bacaSemuaJudul(repo);
 
         System.out.println("Masukkan ID dari objek DaftarBelanja yang ingin diperbaharui\n");
         System.out.println("--> (-1 untuk batal)");
-        long id = Long.parseLong(cin.nextLine());
+        long idDaftarBelanja = Long.parseLong(cin.nextLine());
 
-        if (id != -1) {
-            System.out.println("\nID -> " + id);
+        if (idDaftarBelanja != -1) {
+            System.out.println("\nID -> " + idDaftarBelanja);
             // Mendapatkan data (DaftarBelanja) berdasarkan id
-            Optional<DaftarBelanja> optDB = repo.findById(id);
+            Optional<DaftarBelanja> optDB = repo.findById(idDaftarBelanja);
             if (optDB.isPresent()) {
+                // Meminta data baru ke user untuk judul dan tanggal
                 DaftarBelanja listBelanja = optDB.get();
                 System.out.println("\tJudul : "  + listBelanja.getJudul() + "\n\tWaktu : " + listBelanja.getTanggal() + "\n");
 
                 LocalDateTime waktuTanggal = LocalDateTime.now().withNano(0);
-                System.out.println("Waktu -> " + waktuTanggal);
+                System.out.println("Waktu Update -> " + waktuTanggal);
 
-                System.out.println("Judul -> ");
-                String inJudul = cin.nextLine().trim();
+                System.out.println("Judul Baru -> (-2 untuk skip)");
+                String cinJudul = cin.nextLine().trim();
 
-                listBelanja.setJudul(inJudul);
-                listBelanja.setTanggal(waktuTanggal);
+                if (!cinJudul.equals("-2")) {
+                    listBelanja.setJudul(cinJudul);
+                    listBelanja.setTanggal(waktuTanggal);
+                }
+
+                List<DaftarBelanjaDetil> listBarang = listBelanja.getDaftarBarang();
+
+                String isLanjut = "Y";
+                while (checkUserResponse(isLanjut)) {
+                    // Menampilkan semua barang dari list terpilih
+                    bacaListBarang(listBarang);
+
+                    System.out.println("Masukkan ID dari barang yang ingin diperbaharui\n");
+                    System.out.println("--> (-1 untuk batal)");
+                    int noUrutBarang = Integer.parseInt(cin.nextLine());
+
+                    DaftarBelanjaDetil barang = listBelanja.getBarang(noUrutBarang);
+                    bacaBarang(barang);
+
+                    // Meminta data baru mengenai barang
+                    System.out.println("Data baru : ");
+                    System.out.println("-> Nama Barang : ");
+                    String cinNamabarang = cin.nextLine().trim();
+
+                    System.out.println("-> Jumlah      : [Angka]");
+                    float cinJumlah = cin.nextFloat();
+
+                    // Sentinel
+                    cin.nextLine();
+
+                    System.out.println("-> Satuan      : ");
+                    String cinSatuan = cin.nextLine();
+
+                    System.out.println("-> Memo        : ");
+                    String cinMemo = cin.nextLine().trim();
+
+                    System.out.println("Simpan ? (Y/N)");
+                    String cinSimpan = cin.nextLine().trim();
+
+                    if (checkUserResponse(cinSimpan)) {
+                        barang.setNamaBarang(cinNamabarang);
+                        barang.setByk(cinJumlah);
+                        barang.setSatuan(cinSatuan);
+                        barang.setMemo(cinMemo);
+                        listBelanja.setBarang(barang, noUrutBarang);
+                    }
+
+                    System.out.println("Update Lagi ? (Y/N)");
+                    isLanjut = cin.nextLine().trim();
+                }
 
                 // Menyimpan Data Daftar Belanja ke database
                 repo.save(listBelanja);
@@ -237,15 +289,41 @@ public class controller
                 System.out.println("\tWaktu : " + listBelanja.getTanggal());
             }
             else {
-                System.out.println("List Belanja dengan id {" + id + "} tidak ditemukan.");
+                System.out.println("List Belanja dengan id {" + idDaftarBelanja + "} tidak ditemukan.");
             }
 
             lukisGarisHorizontal();
         }
     }
 
+    private static void bacaListBarang(List<DaftarBelanjaDetil> listBarang)
+    {
+        System.out.println();
+        for (DaftarBelanjaDetil barang : listBarang) {
+            System.out.println(+
+                    barang.getId().getNoUrut() + ". " +
+                    barang.getNamaBarang() + " " +
+                    barang.getByk() + " " +
+                    barang.getSatuan() + " " +
+                    barang.getMemo()
+            );
+        }
+    }
+
+    private static void bacaBarang(DaftarBelanjaDetil barang)
+    {
+        System.out.println("\n" +
+                barang.getId().getNoUrut() + ". " +
+                barang.getNamaBarang() + " " +
+                barang.getByk() + " " +
+                barang.getSatuan() + " " +
+                barang.getMemo() + "\n"
+        );
+    }
+
     public static void hapusDaftarBelanja(DaftarBelanjaRepo repo, DaftarBelanjaDetilRepo repoDetil, Scanner cin)
     {
+        // Membaca semua list belanja yang ada
         bacaSemuaJudul(repo);
 
         System.out.println("Masukkan ID dari objek DaftarBelanja yang ingin dihapus\n");
