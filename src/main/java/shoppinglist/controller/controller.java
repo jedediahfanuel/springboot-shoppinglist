@@ -43,6 +43,9 @@ public class controller
         // Mendapatkan id terakhir dari DaftarBelanja
         DaftarBelanja daftarBelanja = repo.findTopByOrderByIdDesc();
 
+        if (daftarBelanja == null) {
+            return 1;
+        }
         return daftarBelanja.getId() + 1;
     }
 
